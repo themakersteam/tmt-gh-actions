@@ -4,6 +4,14 @@ This action tags an image with semver tags.
 
 ## Inputs
 
+### `working-dir`
+
+**Required** The working directory. Default `.`.
+
+### `image`
+
+**Required** The image to release.
+
 ### `major-version`
 
 **Required** The major version.

@@ -4,7 +4,7 @@ inputs:
   major-version:
     description: 'Major version'
     required: true
-    default: 1
+    default: '1'
 outputs:
   major-version:
     description: 'Major version'

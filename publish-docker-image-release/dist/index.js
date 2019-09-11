@@ -57,9 +57,8 @@ const core = __webpack_require__(470)
 const { spawnSync } = __webpack_require__(129)
 
 try {
-  const workingDir = core.getInput('working-dir')
   const image = core.getInput('image')
-  const tag = core.getInput('tag')
+
   const majorVersion = core.getInput('major-version')
   const minorVersion = core.getInput('minor-version')
   const patchVersion = core.getInput('patch-version')
@@ -70,31 +69,32 @@ try {
     `${majorVersion}.${minorVersion}`,
     `${majorVersion}.${minorVersion}.${patchVersion}`
   ]
-
-  const baseImage = tag ? `${image}:${tag}` : image
-
-  const commands = [
-    ['tag', baseImage],
-    ['push']
-  ]
-
   if (latestTag) {
     tags.push('latest')
   }
 
+  const workingDir = core.getInput('working-dir')
+  const options = { cwd: workingDir }
+
   tags.forEach((tag) => {
-    commands.forEach((args) => {
-      core.startGroup('executing: docker ', args.concat(`${image}:${tag}`).join(' '))
+    const imageTag = `${image}:${tag}`
 
-      const child = spawnSync('docker', args.concat(`${image}:${tag}`), { cwd: workingDir })
-      console.log(`stdout: ${child.stdout}`)
-      console.log(`stderr: ${child.stderr}`)
+    core.startGroup(`publishing: ${imageTag}`)
 
-      if (child.status !== 0) {
-        core.setFailed('Failed')
-      }
-      core.endGroup()
-    })
+    const tagChild = spawnSync('docker', ['tag', image, imageTag], options)
+    console.log(`stdout: ${tagChild.stdout}`)
+    console.log(`stderr: ${tagChild.stderr}`)
+
+    if (tagChild.status !== 0) {
+      core.setFailed('Failed')
+      return
+    }
+
+    const pushChild = spawnSync('docker', ['push', imageTag], options)
+    console.log(`stdout: ${pushChild.stdout}`)
+    console.log(`stderr: ${pushChild.stderr}`)
+
+    core.endGroup()
   })
 } catch (error) {
   core.setFailed(error.message)
