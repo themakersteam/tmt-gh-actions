@@ -4,6 +4,7 @@ const { spawnSync } = require('child_process')
 try {
   const workingDir = core.getInput('working-dir')
   const image = core.getInput('image')
+  const tag = core.getInput('tag')
   const majorVersion = core.getInput('major-version')
   const minorVersion = core.getInput('minor-version')
   const patchVersion = core.getInput('patch-version')
@@ -15,8 +16,10 @@ try {
     `${majorVersion}.${minorVersion}.${patchVersion}`
   ]
 
+  const baseImage = tag ? `${image}:${tag}` : image
+
   const commands = [
-    ['tag', image],
+    ['tag', baseImage],
     ['push']
   ]
 

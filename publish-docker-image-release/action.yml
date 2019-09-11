@@ -6,8 +6,11 @@ inputs:
     required: true
     default: "."
   image:
-    description: 'Docker image name'
+    description: 'Docker image name to release'
     required: true
+  tag:
+    description: 'Docker image tag to release'
+    default: ''
   major-version:
     description: 'Major version'
     required: true
