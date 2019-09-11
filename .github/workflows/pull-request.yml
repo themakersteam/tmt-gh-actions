@@ -14,14 +14,23 @@ jobs:
 
       - uses: actions/setup-node@v1
         with:
-          node-version: '10.x'
+          node-version: '12.x'
 
       - name: Ensure files are compiled
         run: |
-          for DIR in */; do
-            ( cd $DIR && npm i && npx @zeit/ncc build index.js )
+          actions=(
+            publish-docker-image-release
+            release-version
+          )
+
+          for DIR in ${actions[@]}; do
+            # Compile all actions
+            ( cd $DIR && npm i && node_modules/.bin/ncc build index.js )
           done
 
           if output=$(git status --porcelain) && [ ! -z "$output" ]; then
-            echo 1
+            echo "Files are not up-to-date!"
+            git status --porcelain
+            git diff
+            exit 1
           fi
