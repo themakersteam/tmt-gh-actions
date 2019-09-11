@@ -1,5 +1,5 @@
 {
-  "name": "docker-image-release",
+  "name": "publish-docker-image-release",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
