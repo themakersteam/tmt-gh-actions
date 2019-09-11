@@ -1,0 +1,20 @@
+version: 1
+
+update_configs:
+  - package_manager: "javascript"
+    directory: "/publish-docker-image-release"
+    update_schedule: "daily"
+    default_labels:
+      - "type/chore"
+    commit_message:
+      prefix: "chore"
+      include_scope: true
+
+  - package_manager: "javascript"
+    directory: "/release-version"
+    update_schedule: "daily"
+    default_labels:
+      - "type/chore"
+    commit_message:
+      prefix: "chore"
+      include_scope: true
