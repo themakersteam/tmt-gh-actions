@@ -2,7 +2,7 @@ const core = require('@actions/core')
 const { spawnSync } = require('child_process')
 
 try {
-  const image = core.getInput('image')
+  const baseImage = core.getInput('image')
 
   const majorVersion = core.getInput('major-version')
   const minorVersion = core.getInput('minor-version')
@@ -22,11 +22,13 @@ try {
   const options = { cwd: workingDir }
 
   tags.forEach((tag) => {
-    const imageTag = `${image}:${tag}`
-
+    const imageTag = `${baseImage}:${tag}`
     core.startGroup(`publishing: ${imageTag}`)
 
-    const tagChild = spawnSync('docker', ['tag', image, imageTag], options)
+    const tagArgs = ['tag', baseImage, `${imageTag}`]
+    console.log(`executing: docker ${tagArgs.join(' ')}`)
+
+    const tagChild = spawnSync('docker', tagArgs, options)
     console.log(`stdout: ${tagChild.stdout}`)
     console.log(`stderr: ${tagChild.stderr}`)
 
@@ -35,9 +37,12 @@ try {
       return
     }
 
-    const pushChild = spawnSync('docker', ['push', imageTag], options)
-    console.log(`stdout: ${pushChild.stdout}`)
-    console.log(`stderr: ${pushChild.stderr}`)
+    const pushArgs = ['push', `${imageTag}`]
+    console.log(`executing: docker ${pushArgs.join(' ')}`)
+
+    const pushChild = spawnSync('docker', pushArgs, options)
+    console.log(`stdout: ${pushChild.stdout.toString()}`)
+    console.log(`stderr: ${pushChild.stderr.toString()}`)
 
     core.endGroup()
   })
