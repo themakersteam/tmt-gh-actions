@@ -20,7 +20,7 @@ jobs:
         run: |
           actions=(
             publish-docker-image-release
-            release-version
+            generate-release-version
           )
 
           for DIR in ${actions[@]}; do

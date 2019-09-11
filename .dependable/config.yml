@@ -11,7 +11,7 @@ update_configs:
       include_scope: true
 
   - package_manager: "javascript"
-    directory: "/release-version"
+    directory: "/generate-release-version"
     update_schedule: "daily"
     default_labels:
       - "type/chore"
