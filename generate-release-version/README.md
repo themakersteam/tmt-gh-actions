@@ -1,4 +1,4 @@
-# Release Version action
+# Generate Release Version action
 
 This action generates a version for a release based on the current time.
 

@@ -1,5 +1,5 @@
 {
-  "name": "setup-ssh-key",
+  "name": "setup-deploy-key",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

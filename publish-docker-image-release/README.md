@@ -1,4 +1,4 @@
-# Release Version action
+# Publish Docker Image Release action
 
 This action tags an image with semver tags.
 
