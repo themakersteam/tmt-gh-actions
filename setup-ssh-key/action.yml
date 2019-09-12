@@ -1,0 +1,9 @@
+name: 'Setup SSH Key'
+description: 'Setup an SSH key'
+inputs:
+  ssh-key:
+    description: 'The SSH key'
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

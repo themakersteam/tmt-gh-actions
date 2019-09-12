@@ -24,6 +24,8 @@ The patch version.
 
 ## Example usage
 
-uses: themakersteam/tmt-gh-actions/generate-release-version@master
-with:
-  major-version: '1'
+```yaml
+- uses: themakersteam/tmt-gh-actions/generate-release-version@master
+  with:
+    major-version: '1'
+```

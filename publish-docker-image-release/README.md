@@ -30,6 +30,16 @@ This action tags an image with semver tags.
 
 ## Example usage
 
-uses: themakersteam/tmt-gh-actions/publish-docker-image-release@master
-with:
-  major-version: '1'
+```yaml
+- uses: themakersteam/tmt-gh-actions/generate-release-version@master
+  id: release
+  with:
+    major-version: '1'
+
+- uses: themakersteam/tmt-gh-actions/publish-docker-image-release@master
+  with:
+    image: docker-image:latest
+    major-version: ${{ steps.release.outputs.major-version }}
+    minor-version: ${{ steps.release.outputs.minor-version }}
+    patch-version: ${{ steps.release.outputs.patch-version }}
+```
