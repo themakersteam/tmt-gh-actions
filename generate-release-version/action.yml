@@ -6,6 +6,8 @@ inputs:
     required: true
     default: '1'
 outputs:
+  version:
+    description: 'Version'
   major-version:
     description: 'Major version'
   minor-version:

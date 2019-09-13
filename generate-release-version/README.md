@@ -10,6 +10,10 @@ This action generates a version for a release based on the current time.
 
 ## Outputs
 
+### `version`
+
+The version.
+
 ### `major-version`
 
 The major version.
