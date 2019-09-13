@@ -18,3 +18,12 @@ update_configs:
     commit_message:
       prefix: "chore"
       include_scope: true
+
+  - package_manager: "javascript"
+    directory: "/setup-deploy-key"
+    update_schedule: "daily"
+    default_labels:
+      - "type/chore"
+    commit_message:
+      prefix: "chore"
+      include_scope: true
