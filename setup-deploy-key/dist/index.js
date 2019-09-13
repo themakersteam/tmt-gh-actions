@@ -34,7 +34,7 @@ module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(7);
+/******/ 		return __webpack_require__(104);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -43,10 +43,17 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ 7:
+/***/ 87:
+/***/ (function(module) {
+
+module.exports = require("os");
+
+/***/ }),
+
+/***/ 104:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
-const core = __webpack_require__(297)
+const core = __webpack_require__(470)
 const fs = __webpack_require__(747)
 const { spawnSync } = __webpack_require__(129)
 
@@ -81,13 +88,6 @@ try {
 
 /***/ }),
 
-/***/ 87:
-/***/ (function(module) {
-
-module.exports = require("os");
-
-/***/ }),
-
 /***/ 129:
 /***/ (function(module) {
 
@@ -95,7 +95,80 @@ module.exports = require("child_process");
 
 /***/ }),
 
-/***/ 297:
+/***/ 431:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const os = __webpack_require__(87);
+/**
+ * Commands
+ *
+ * Command Format:
+ *   ##[name key=value;key=value]message
+ *
+ * Examples:
+ *   ##[warning]This is the user warning message
+ *   ##[set-secret name=mypassword]definitelyNotAPassword!
+ */
+function issueCommand(command, properties, message) {
+    const cmd = new Command(command, properties, message);
+    process.stdout.write(cmd.toString() + os.EOL);
+}
+exports.issueCommand = issueCommand;
+function issue(name, message = '') {
+    issueCommand(name, {}, message);
+}
+exports.issue = issue;
+const CMD_PREFIX = '##[';
+class Command {
+    constructor(command, properties, message) {
+        if (!command) {
+            command = 'missing.command';
+        }
+        this.command = command;
+        this.properties = properties;
+        this.message = message;
+    }
+    toString() {
+        let cmdStr = CMD_PREFIX + this.command;
+        if (this.properties && Object.keys(this.properties).length > 0) {
+            cmdStr += ' ';
+            for (const key in this.properties) {
+                if (this.properties.hasOwnProperty(key)) {
+                    const val = this.properties[key];
+                    if (val) {
+                        // safely append the val - avoid blowing up when attempting to
+                        // call .replace() if message is not a string for some reason
+                        cmdStr += `${key}=${escape(`${val || ''}`)};`;
+                    }
+                }
+            }
+        }
+        cmdStr += ']';
+        // safely append the message - avoid blowing up when attempting to
+        // call .replace() if message is not a string for some reason
+        const message = `${this.message || ''}`;
+        cmdStr += escapeData(message);
+        return cmdStr;
+    }
+}
+function escapeData(s) {
+    return s.replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+}
+function escape(s) {
+    return s
+        .replace(/\r/g, '%0D')
+        .replace(/\n/g, '%0A')
+        .replace(/]/g, '%5D')
+        .replace(/;/g, '%3B');
+}
+//# sourceMappingURL=command.js.map
+
+/***/ }),
+
+/***/ 470:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
 "use strict";
@@ -110,7 +183,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const command_1 = __webpack_require__(677);
+const command_1 = __webpack_require__(431);
 const path = __webpack_require__(622);
 /**
  * The code to exit an action
@@ -274,79 +347,6 @@ exports.group = group;
 /***/ (function(module) {
 
 module.exports = require("path");
-
-/***/ }),
-
-/***/ 677:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const os = __webpack_require__(87);
-/**
- * Commands
- *
- * Command Format:
- *   ##[name key=value;key=value]message
- *
- * Examples:
- *   ##[warning]This is the user warning message
- *   ##[set-secret name=mypassword]definitelyNotAPassword!
- */
-function issueCommand(command, properties, message) {
-    const cmd = new Command(command, properties, message);
-    process.stdout.write(cmd.toString() + os.EOL);
-}
-exports.issueCommand = issueCommand;
-function issue(name, message = '') {
-    issueCommand(name, {}, message);
-}
-exports.issue = issue;
-const CMD_PREFIX = '##[';
-class Command {
-    constructor(command, properties, message) {
-        if (!command) {
-            command = 'missing.command';
-        }
-        this.command = command;
-        this.properties = properties;
-        this.message = message;
-    }
-    toString() {
-        let cmdStr = CMD_PREFIX + this.command;
-        if (this.properties && Object.keys(this.properties).length > 0) {
-            cmdStr += ' ';
-            for (const key in this.properties) {
-                if (this.properties.hasOwnProperty(key)) {
-                    const val = this.properties[key];
-                    if (val) {
-                        // safely append the val - avoid blowing up when attempting to
-                        // call .replace() if message is not a string for some reason
-                        cmdStr += `${key}=${escape(`${val || ''}`)};`;
-                    }
-                }
-            }
-        }
-        cmdStr += ']';
-        // safely append the message - avoid blowing up when attempting to
-        // call .replace() if message is not a string for some reason
-        const message = `${this.message || ''}`;
-        cmdStr += escapeData(message);
-        return cmdStr;
-    }
-}
-function escapeData(s) {
-    return s.replace(/\r/g, '%0D').replace(/\n/g, '%0A');
-}
-function escape(s) {
-    return s
-        .replace(/\r/g, '%0D')
-        .replace(/\n/g, '%0A')
-        .replace(/]/g, '%5D')
-        .replace(/;/g, '%3B');
-}
-//# sourceMappingURL=command.js.map
 
 /***/ }),
 

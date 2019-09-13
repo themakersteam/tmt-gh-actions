@@ -21,10 +21,11 @@ jobs:
           actions=(
             publish-docker-image-release
             generate-release-version
+            setup-deploy-key
           )
 
+          # Compile all actions
           for DIR in ${actions[@]}; do
-            # Compile all actions
             ( cd $DIR && npm i && node_modules/.bin/ncc build index.js )
           done
 
