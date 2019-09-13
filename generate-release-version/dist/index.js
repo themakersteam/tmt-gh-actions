@@ -59,13 +59,17 @@ const core = __webpack_require__(470)
 const version = __webpack_require__(935)
 
 try {
-  const majorVersion = core.getInput('major-version')
-
   const d = new Date()
 
+  const majorVersion = core.getInput('major-version')
+  const minorVersion = version.minorFromDate(d)
+  const patchVersion = version.patchFromDate(d)
+
+  core.setOutput('version', `${majorVersion}.${minorVersion}.${patchVersion}`)
+
   core.setOutput('major-version', majorVersion)
-  core.setOutput('minor-version', version.minorFromDate(d))
-  core.setOutput('patch-version', version.patchFromDate(d))
+  core.setOutput('minor-version', minorVersion)
+  core.setOutput('patch-version', patchVersion)
 } catch (error) {
   core.setFailed(error.message)
 }
