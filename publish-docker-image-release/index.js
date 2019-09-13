@@ -2,7 +2,8 @@ const core = require('@actions/core')
 const { spawnSync } = require('child_process')
 
 try {
-  const baseImage = core.getInput('image')
+  const image = core.getInput('image')
+  const baseImage = core.getInput('image') || image
 
   const majorVersion = core.getInput('major-version')
   const minorVersion = core.getInput('minor-version')
@@ -14,6 +15,7 @@ try {
     `${majorVersion}.${minorVersion}`,
     `${majorVersion}.${minorVersion}.${patchVersion}`
   ]
+
   if (latestTag) {
     tags.push('latest')
   }
@@ -22,7 +24,7 @@ try {
   const options = { cwd: workingDir }
 
   tags.forEach((tag) => {
-    const imageTag = `${baseImage}:${tag}`
+    const imageTag = `${image}:${tag}`
     core.startGroup(`publishing: ${imageTag}`)
 
     const tagArgs = ['tag', baseImage, `${imageTag}`]

@@ -8,6 +8,8 @@ inputs:
   image:
     description: 'The image to release'
     required: true
+  from-image:
+    description: 'Override the source image.'
   major-version:
     description: 'Major version'
     required: true
