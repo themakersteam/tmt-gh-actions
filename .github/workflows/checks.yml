@@ -1,4 +1,4 @@
-name: Actions
+name: Checks
 
 on:
   pull_request:
@@ -13,8 +13,6 @@ jobs:
       - uses: actions/checkout@v1
 
       - uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
 
       - name: Ensure files are compiled
         run: |
@@ -35,3 +33,13 @@ jobs:
             git diff
             exit 1
           fi
+
+      - run: |
+          actions=(
+            publish-docker-image-release
+          )
+
+          # Compile all actions
+          for DIR in ${actions[@]}; do
+            ( cd $DIR && npm i && node_modules/.bin/ncc build index.js )
+          done

@@ -1,28 +1,28 @@
-name: 'Publish Docker Image Release'
-description: 'Build and Push a Docker Image Release'
+name: "Publish Docker Image Release"
+description: "Build and Push a Docker Image Release"
 inputs:
   working-dir:
-    description: 'The working directory'
+    description: "The working directory"
     required: true
-    default: '.'
+    default: "."
   image:
-    description: 'The image to release'
+    description: "The image to release"
     required: true
   from-image:
-    description: 'Override the source image.'
+    description: "Override the source image."
   major-version:
-    description: 'Major version'
+    description: "Major version"
     required: true
   minor-version:
-    description: 'Minor version'
+    description: "Minor version"
     required: true
   patch-version:
-    description: 'Patch version'
+    description: "Patch version"
     required: true
   latest-tag:
-    description: 'Tag and push a latest tags'
+    description: "Tag and push a latest tags"
     required: false
-    default: 'false'
+    default: "false"
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "lib/main.js"
